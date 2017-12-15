@@ -1,0 +1,42 @@
+version: "2"
+
+services:
+
+  phpmyfaq:
+    image: merhylstudio/phpmyfaq:2.9.9
+    links:
+    - mariadb
+    - elasticsearch
+    ports:
+    - "8080:80"
+    volumes:
+    - attachments:/var/www/html/phpmyfaq/attachments
+    - data:/var/www/html/phpmyfaq/data
+    - images:/var/www/html/phpmyfaq/images
+
+  mariadb:
+    image: mariadb:10.2.9
+    environment:
+    - MYSQL_ROOT_PASSWORD=iop
+    - MYSQL_DATABASE=phpmyfaq
+    - MYSQL_USER=phpmyfaq
+    - MYSQL_PASSWORD=phpmyfaq
+    volumes:
+    - mariadb-data:/var/lib/mysql
+
+  elasticsearch:
+    image: elasticsearch:5.5.2
+    volumes:
+    - elasticsearch-data:/usr/share/elasticsearch/data
+
+volumes:
+  attachments:
+    driver: local
+  data:
+    driver: local
+  images:
+    driver: local
+  mariadb-data:
+    driver: local
+  elasticsearch-data:
+    driver: local
